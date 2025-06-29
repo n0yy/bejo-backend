@@ -11,3 +11,6 @@ wheels/
 
 qdrant_storage
 .pytest_cache
+
+tests
+uploads
