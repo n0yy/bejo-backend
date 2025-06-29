@@ -4,7 +4,6 @@
 
 **Bejo Backend** is a **Retrieval-Augmented Generation (RAG)** service built with **FastAPI**, **LangGraph**, **Google Gemini**, and **Qdrant**. It provides a set of APIs to upload documents, store them in a vector database, and answer questions with context-aware responses powered by LLMs.
 
----
 
 ## 🧭 Table of Contents
 
@@ -16,13 +15,10 @@
 6. [📁 Project Structure](#project-structure)
 7. [📝 License](#license)
 
----
 
 ## 📌 Introduction
 
 Bejo Backend transforms your unstructured documents (PDFs, Word, etc.) into an interactive, queryable knowledge base. Documents are embedded using **Google Gemini embeddings**, stored in **Qdrant**, and queried using a LangGraph-powered RAG pipeline that retrieves relevant context and generates LLM-based answers.
-
----
 
 ## 🛠️ Why These Tools?
 
@@ -35,7 +31,6 @@ Bejo Backend transforms your unstructured documents (PDFs, Word, etc.) into an i
 | **Qdrant**        | Open-source, high-performance vector database for similarity search.                  |
 | **Docling**       | Flexible document loader supporting PDFs, Word docs, and more, with metadata support. |
 
----
 
 ## ✨ Features
 
@@ -57,7 +52,6 @@ Bejo Backend transforms your unstructured documents (PDFs, Word, etc.) into an i
 * 🧪 **Interactive API Docs**
   Swagger UI available at `/docs` when the server is running.
 
----
 
 ## ⚙️ Setup
 
@@ -101,7 +95,6 @@ docker compose up --build
 
 > This runs both the API (`localhost:8000`) and Qdrant (`localhost:6333`).
 
----
 
 ## 🚀 Usage
 
@@ -132,7 +125,6 @@ Example payload:
 }
 ```
 
----
 
 ## 📁 Project Structure
 
@@ -147,8 +139,6 @@ docker-compose.yml
 .env.example        # Environment variable template
 README.md
 ```
-
----
 
 ## 📝 License
 
