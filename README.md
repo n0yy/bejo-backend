@@ -2,83 +2,156 @@
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
-Bejo Backend is a Retrieval-Augmented Generation (RAG) service built with FastAPI, LangGraph, Gemini, and Qdrant. It provides an API for uploading documents, storing them in a vector store, and answering questions with context-aware responses.
+**Bejo Backend** is a **Retrieval-Augmented Generation (RAG)** service built with **FastAPI**, **LangGraph**, **Google Gemini**, and **Qdrant**. It provides a set of APIs to upload documents, store them in a vector database, and answer questions with context-aware responses powered by LLMs.
 
-## Table of Contents
-1. [Introduction](#introduction)
-2. [Why These Tools?](#why-these-tools)
-3. [Features](#features)
-4. [Setup](#setup)
-5. [Usage](#usage)
-6. [Project Structure](#project-structure)
-7. [License](#license)
+---
 
-## Introduction
-Bejo Backend turns your unstructured documents into an interactive knowledge base. It indexes documents in Qdrant, embeds them with Gemini embeddings, and responds to user queries by combining relevant snippets with the power of Google Gemini LLMs.
+## 🧭 Table of Contents
 
-## Why These Tools?
-- **FastAPI** – modern, fast web framework with automatic interactive docs.
-- **LangGraph** – state-machine abstraction on top of LangChain that makes multi-step RAG pipelines explicit and debuggable.
-- **LangChain** – glue between LLMs, vector stores, and prompt orchestration.
-- **Google Gemini (langchain-google-genai)** – powerful, production-ready LLM provider.
-- **Qdrant** – open-source, high-performance vector database for similarity search.
-- **Docling** – robust loader for PDFs, Word docs, and more.
+1. [📌 Introduction](#introduction)
+2. [🛠️ Why These Tools?](#why-these-tools)
+3. [✨ Features](#features)
+4. [⚙️ Setup](#setup)
+5. [🚀 Usage](#usage)
+6. [📁 Project Structure](#project-structure)
+7. [📝 License](#license)
 
-## Features
-- 📄 **Document ingestion** with automatic splitting and metadata enrichment.
-- 🔍 **Semantic search** over multiple knowledge levels (level_1 – level_4).
-- 🧠 **Retrieval-Augmented Generation** giving cited answers powered by Gemini.
-- 🔄 **LangGraph workflow** that separates retrieval and generation steps.
-- 🐳 **Dockerized deployment** + `docker-compose` with Qdrant included.
-- 📑 **OpenAPI docs** available at `/docs` once the server is running.
+---
 
-## Setup
-### Prerequisites
-- Python ≥ 3.11
-- Docker & Docker Compose (optional but recommended)
+## 📌 Introduction
 
-### Environment Variables
-Create a `.env` in the project root:
+Bejo Backend transforms your unstructured documents (PDFs, Word, etc.) into an interactive, queryable knowledge base. Documents are embedded using **Google Gemini embeddings**, stored in **Qdrant**, and queried using a LangGraph-powered RAG pipeline that retrieves relevant context and generates LLM-based answers.
+
+---
+
+## 🛠️ Why These Tools?
+
+| Tool              | Reason                                                                                |
+| ----------------- | ------------------------------------------------------------------------------------- |
+| **FastAPI**       | Modern, high-performance web framework with automatic interactive docs (Swagger).     |
+| **LangGraph**     | Explicit, debuggable RAG pipelines built as state machines.                           |
+| **LangChain**     | Integration layer for LLMs, vector databases, and prompt orchestration.               |
+| **Google Gemini** | Powerful, production-ready LLM by Google.                                             |
+| **Qdrant**        | Open-source, high-performance vector database for similarity search.                  |
+| **Docling**       | Flexible document loader supporting PDFs, Word docs, and more, with metadata support. |
+
+---
+
+## ✨ Features
+
+* 📄 **Document Ingestion**
+  Automatic file parsing, chunking, and metadata enrichment (page, level, filename, etc.).
+
+* 🔍 **Semantic Search with Levels**
+  Search across multi-level knowledge categories (e.g., `level_1`, `level_2`, ...).
+
+* 🧠 **Context-Aware QA (RAG)**
+  Answers questions by retrieving relevant document chunks and generating answers with Gemini.
+
+* 🔄 **LangGraph Workflow**
+  Clear, step-by-step pipeline for document retrieval and response generation.
+
+* 📦 **Dockerized Deployment**
+  Easily deploy both the API and vector store using `docker-compose`.
+
+* 🧪 **Interactive API Docs**
+  Swagger UI available at `/docs` when the server is running.
+
+---
+
+## ⚙️ Setup
+
+### 🔧 Prerequisites
+
+* Python `>= 3.11`
+* Docker & Docker Compose *(optional but recommended)*
+
+### 🔑 Environment Variables
+
+Create a `.env` file in the project root:
+
 ```env
 GOOGLE_API_KEY=your_google_genai_key
 ```
 
-### Local Development
+### 🧪 Local Development
+
 ```bash
-# install dependencies
-python -m venv .venv && source .venv/bin/activate
+# Set up virtual environment
+python -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies
 pip install -e .
 
-# start Qdrant (optional: use docker compose)
+# Optional: start Qdrant vector DB
 docker compose up -d qdrant
 
-# run the API
+# Run FastAPI server
 uvicorn app.main:app --reload
 ```
-Navigate to `http://localhost:8000/docs` for interactive Swagger docs.
 
-### Docker Compose
+Then navigate to [http://localhost:8000/docs](http://localhost:8000/docs) to view interactive API documentation.
+
+### 🐳 Docker Compose (Full Stack)
+
 ```bash
 docker compose up --build
 ```
-This launches both the API (`localhost:8000`) and Qdrant (`localhost:6333`).
 
-## Usage
-1. `POST /upload` – upload a document with a `category` (level_1-level_4).
-2. `POST /chat` – ask a question; the service retrieves relevant chunks and generates an answer citing sources.
+> This runs both the API (`localhost:8000`) and Qdrant (`localhost:6333`).
 
-Check the Swagger UI for detailed schemas and examples.
+---
 
-## Project Structure
+## 🚀 Usage
+
+### 🔼 `POST /upload?embed=true`
+
+Upload a document and immediately embed it. Requires a `category` (e.g., `level_1`, `level_2`, ...).
+
+Example:
+
+```bash
+curl -X POST http://localhost:8000/upload?embed=true \
+  -F "file=@yourfile.pdf" \
+  -F "category=level_1"
+```
+
+### 💬 `POST /chat/{thread_id}`
+
+Ask a question based on context (with optional conversation history). `thread_id` allows multi-turn conversations.
+
+Example payload:
+
+```json
+{
+  "query": "What is GMP?",
+  "history": [
+    {"role": "user", "content": "Explain the production procedure."}
+  ]
+}
+```
+
+---
+
+## 📁 Project Structure
+
 ```
 app/
- ├─ core/          # embeddings, llm, vectorstore, splitter, memory
- ├─ services/      # RAGService orchestrating ingestion & RAG graph
- ├─ api/           # FastAPI routers (upload, chat, health, …)
- └─ main.py        # FastAPI application factory
+ ├─ core/          # Embeddings, LLM setup, vectorstore config, text splitter, memory
+ ├─ services/      # RAG orchestration logic using LangGraph
+ ├─ api/           # FastAPI routers (upload, chat, healthcheck, etc.)
+ └─ main.py        # FastAPI application entrypoint
 Dockerfile
 docker-compose.yml
+.env.example        # Environment variable template
+README.md
 ```
 
-## License
-MIT © 2025 Danang Hapis Fadillah
+---
+
+## 📝 License
+
+MIT © 2025 [Danang Hapis Fadillah](mailto:danangpostman37@gmail.com)
+
+> Free to use, modify, and distribute — just include the original license and give credit where it’s due 🙌
