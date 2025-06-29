@@ -1,0 +1,21 @@
+[project]
+name = "bejo-backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.14",
+    "langchain>=0.3.26",
+    "langchain-docling>=1.0.0",
+    "langchain-google-genai>=2.1.5",
+    "langchain-ollama>=0.3.3",
+    "langchain-qdrant>=0.2.0",
+    "langgraph>=0.5.0",
+    "pydantic>=2.11.7",
+    "pytest>=8.4.1",
+    "python-dotenv>=1.1.1",
+    "python-multipart>=0.0.20",
+    "qdrant-client>=1.14.3",
+    "uvicorn>=0.35.0",
+]
