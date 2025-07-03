@@ -1,42 +1,32 @@
-# Ignore version control system files
 .git
 
-# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *.so
 
-# Virtual environments
 .venv/
 venv/
 
-# Editor / IDE settings
 .vscode/
 .idea/
 
-# Test artifacts
 .pytest_cache/
 pytest_cache/
 coverage*
 
-# Build / distribution artifacts
 *.egg-info/
 *.dist-info/
 
-# Local data directories not needed inside the image
 qdrant_storage/
 uploads/
 
 # Logs
 *.log
 
-# Environment / secrets
-.env
 
 # Tests
 /tests/
 
-# Docker files themselves aren't needed in the context
 Dockerfile
 **/Dockerfile*
 docker-compose.yml

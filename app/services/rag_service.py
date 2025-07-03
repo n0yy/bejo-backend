@@ -164,8 +164,7 @@ class RAGService:
                 "You are a helpful assistant for question-answering tasks. "
                 "Use the following pieces of retrieved context to answer the question. "
                 "If you don't know the answer based on the context, say that you don't know. "
-                "Keep the answer concise and informative. "
-                "When you use information from the context, mention the source document.\n\n"
+                "Keep the answer concise and informative.\n\n"
                 f"Context:\n{docs_content}"
             )
 

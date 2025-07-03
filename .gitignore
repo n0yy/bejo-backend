@@ -14,3 +14,5 @@ qdrant_storage
 
 tests
 uploads
+
+.env

@@ -9,7 +9,6 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# ✅ Tambahkan CORS middleware dengan cara ini:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -21,7 +20,6 @@ app.add_middleware(
 # Mount static files
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
-# Routers (pastikan chat, upload, health, collection sudah di-import)
 app.include_router(chat.router)
 app.include_router(upload.router)
 app.include_router(health.router)

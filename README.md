@@ -93,10 +93,10 @@ Then navigate to [http://localhost:8000/docs](http://localhost:8000/docs) to vie
 docker compose up --build
 ```
 
-> This runs both the API (`localhost:8000`) and Qdrant (`localhost:6333`).
+> This runs both the API (`localhost:8000`) and Qdrant (`localhost:6335`).
 
 
-## 🚀 Usage
+## 🚀 Usage 
 
 ### 🔼 `POST /upload?embed=true`
 
