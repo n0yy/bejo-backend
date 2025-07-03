@@ -18,7 +18,6 @@ from app.core.memory import memory
 import uuid
 from datetime import datetime
 
-
 COLLECTION_NAMES = [
     "bejo_knowledge_level_1",
     "bejo_knowledge_level_2",
@@ -32,7 +31,6 @@ CATEGORY_TO_COLLECTION = {
     "3": "bejo_knowledge_level_3",
     "4": "bejo_knowledge_level_4",
 }
-
 
 class RAGService:
     def __init__(self):

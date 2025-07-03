@@ -11,10 +11,8 @@ router = APIRouter(prefix="/health")
 async def health_check():
     """Health check endpoint"""
     try:
-        # Check Qdrant connection
         qdrant_client.get_collections()
 
-        # Check if Ollama is responding (basic check)
         test_embedding = embeddings.embed_query("test")
 
         return JSONResponse(

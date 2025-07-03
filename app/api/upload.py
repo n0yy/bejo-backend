@@ -47,6 +47,7 @@ async def upload_document(
         ".pptx",
         ".html",
         ".txt",
+        ".csv",
         ".png",
         ".jpg",
         ".jpeg",
