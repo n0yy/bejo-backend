@@ -27,10 +27,10 @@ COLLECTION_NAMES = [
 ]
 
 CATEGORY_TO_COLLECTION = {
-    "level_1": "bejo_knowledge_level_1",
-    "level_2": "bejo_knowledge_level_2",
-    "level_3": "bejo_knowledge_level_3",
-    "level_4": "bejo_knowledge_level_4",
+    "1": "bejo_knowledge_level_1",
+    "2": "bejo_knowledge_level_2",
+    "3": "bejo_knowledge_level_3",
+    "4": "bejo_knowledge_level_4",
 }
 
 

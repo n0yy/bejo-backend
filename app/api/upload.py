@@ -41,7 +41,19 @@ async def upload_document(
             detail=f"Invalid category. Must be one of: {list(CATEGORY_TO_COLLECTION.keys())}",
         )
 
-    allowed_extensions = {".pdf", ".docx", ".pptx", ".html", ".txt"}
+    allowed_extensions = {
+        ".pdf",
+        ".docx",
+        ".pptx",
+        ".html",
+        ".txt",
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".gif",
+        "webp",
+        "tiff",
+    }
     file_extension = Path(file.filename).suffix.lower()
     if file_extension not in allowed_extensions:
         raise HTTPException(
