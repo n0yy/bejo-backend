@@ -5,7 +5,6 @@ from langchain_qdrant import QdrantVectorStore
 from langchain_core.tools import tool
 from langchain_core.messages import SystemMessage
 
-# LangGraph imports
 from langgraph.graph import MessagesState, StateGraph, END
 from langgraph.prebuilt import ToolNode, tools_condition
 
@@ -32,6 +31,7 @@ CATEGORY_TO_COLLECTION = {
     "4": "bejo_knowledge_level_4",
 }
 
+
 class RAGService:
     def __init__(self):
         self.setup_collections()
@@ -49,7 +49,7 @@ class RAGService:
                 qdrant_client.create_collection(
                     collection_name=collection_name,
                     vectors_config=VectorParams(
-                        size=768,  # nomic-embed-text embedding size
+                        size=768,
                         distance=Distance.COSINE,
                     ),
                 )
@@ -114,7 +114,7 @@ class RAGService:
         def retrieve(query: str):
             """Retrieve information related to a query from the knowledge base."""
             try:
-                retrieved_docs = vector_store.similarity_search(query, k=3)
+                retrieved_docs = vector_store.similarity_search(query, k=5)
                 if not retrieved_docs:
                     return "No relevant information found in the knowledge base.", []
 
@@ -146,7 +146,6 @@ class RAGService:
 
         def generate(state: MessagesState):
             """Generate answer using retrieved context."""
-            # Get recent tool messages
             recent_tool_messages = []
             for message in reversed(state["messages"]):
                 if message.type == "tool":
@@ -155,18 +154,18 @@ class RAGService:
                     break
             tool_messages = recent_tool_messages[::-1]
 
-            # Format context from retrieved documents
             docs_content = "\n\n".join(doc.content for doc in tool_messages)
 
             system_message_content = (
                 "You are a helpful assistant for question-answering tasks. "
                 "Use the following pieces of retrieved context to answer the question. "
                 "If you don't know the answer based on the context, say that you don't know. "
-                "Keep the answer concise and informative.\n\n"
+                "Use markdown format to your answer and give relevant emojis. "
+                "Keep the answer concise and informative."
+                "Note: Answer using the same language the user uses.\n\n"
                 f"Context:\n{docs_content}"
             )
 
-            # Get conversation messages (excluding tool calls)
             conversation_messages = [
                 message
                 for message in state["messages"]
@@ -176,7 +175,6 @@ class RAGService:
 
             prompt = [SystemMessage(system_message_content)] + conversation_messages
             response = llm.invoke(prompt)
-            # Attach timestamp to AI response
             response.additional_kwargs["timestamp"] = datetime.utcnow().isoformat()
             return {"messages": [response]}
 
