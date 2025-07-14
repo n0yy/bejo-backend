@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import chat, upload, health, vectorstore, auth
+from app.api import chat, upload, health, vectorstore
 
 app = FastAPI(
     title="BEJO - Backend",
@@ -23,4 +23,3 @@ app.include_router(chat.router)
 app.include_router(upload.router)
 app.include_router(health.router)
 app.include_router(vectorstore.router)
-app.include_router(auth.router)
