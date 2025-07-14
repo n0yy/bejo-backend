@@ -10,4 +10,8 @@ load_dotenv()
 # Set Cache
 set_llm_cache(InMemoryCache())
 
-llm = ChatOllama(model=os.getenv("OLLAMA_LLM_MODEL"), cache=True, reasoning=False)
+llm = ChatOllama(
+    model=os.getenv("OLLAMA_LLM_MODEL"),
+    cache=True,
+    reasoning=False,
+)
