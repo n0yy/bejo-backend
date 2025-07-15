@@ -140,7 +140,6 @@ class RAGService:
             """Generate tool call for retrieval or respond directly."""
             llm_with_tools = llm.bind_tools([retrieve_tool])
             response = llm_with_tools.invoke(state["messages"])
-            # Attach timestamp to AI response
             response.additional_kwargs["timestamp"] = datetime.utcnow().isoformat()
             return {"messages": [response]}
 
