@@ -89,7 +89,7 @@ class RAGService:
             )
 
         # Split documents into chunks
-        chunks = splitter().split_documents(documents)
+        chunks = splitter().split_text(documents)
 
         # Get appropriate vector store
         collection_name = CATEGORY_TO_COLLECTION.get(category)
