@@ -16,3 +16,4 @@ tests
 uploads
 
 .env
+qdrant_data
