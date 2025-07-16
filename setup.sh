@@ -57,7 +57,7 @@ check_models() {
     fi
     
     models=$(docker-compose exec ollama ollama list 2>/dev/null)
-    if echo "$models" | grep -q "llama3.2" && echo "$models" | grep -q "nomic-embed-text"; then
+    if echo "$models" | grep -q "qwen2.5:3b " && echo "$models" | grep -q "nomic-embed-text"; then
         print_success "Semua model tersedia!"
         echo "$models"
     else
@@ -91,9 +91,9 @@ pull_models() {
     print_success "Ollama service ready!"
     
     # Pull models dengan progress indicator
-    print_info "📦 Mengunduh model llama3.2..."
+    print_info "📦 Mengunduh model qwen2.5:3b ..."
     print_info "☕ Ambil kopi dulu, ini bakal lama..."
-    docker-compose exec ollama ollama pull llama3.2
+    docker-compose exec ollama ollama pull qwen2.5:3b 
     
     print_info "🧠 Mengunduh model nomic-embed-text (±274MB)..."
     docker-compose exec ollama ollama pull nomic-embed-text

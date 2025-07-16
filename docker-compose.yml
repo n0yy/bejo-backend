@@ -9,7 +9,7 @@ services:
     environment:
       - QDRANT_HOST=qdrant
       - QDRANT_PORT=6333
-      - OLLAMA_LLM_MODEL=llama3.2
+      - OLLAMA_LLM_MODEL=qwen2.5:3b
       - OLLAMA_EMBEDDING_MODEL=nomic-embed-text
       - OLLAMA_BASE_URL=http://ollama:11434
     volumes:
@@ -29,7 +29,7 @@ services:
       - 6334
       - 6335
     volumes:
-      - ./qdrant_data:/qdrant/storage
+      - ./qdrant_storage:/qdrant/storage
 
   ollama:
     image: ollama/ollama:latest
@@ -43,5 +43,5 @@ services:
     entrypoint: /bin/ollama serve
 
 volumes:
-  qdrant_data:
+  qdrant_storage:
   ollama_data:

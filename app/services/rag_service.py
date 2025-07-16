@@ -68,40 +68,35 @@ class RAGService:
         self, file_path: str, filename: str, category: str
     ) -> tuple[int, str]:
         """Process document and add to vector store"""
-        # Load document using DoclingLoader
         loader = DoclingLoader(file_path=file_path, export_type=ExportType.MARKDOWN)
         documents = loader.load()
 
         if not documents:
             raise ValueError("No content extracted from document")
 
-        # Add metadata
         document_id = str(uuid.uuid4())
-        for doc in documents:
-            doc.metadata.update(
-                {
-                    "filename": filename,
-                    "document_id": document_id,
-                    "upload_date": datetime.now().isoformat(),
-                    "file_path": file_path,
-                    "category": category,
-                }
-            )
+        base_metadata = {
+            "filename": filename,
+            "document_id": document_id,
+            "upload_date": datetime.now().isoformat(),
+            "file_path": file_path,
+            "category": category,
+        }
 
-        # Split documents into chunks
-        chunks = splitter().split_text(documents)
+        combined_text = "\n\n".join([doc.page_content for doc in documents])
+        chunk_docs = splitter().split_text(combined_text)
 
-        # Get appropriate vector store
+        for chunk in chunk_docs:
+            chunk.metadata.update(base_metadata)
+
         collection_name = CATEGORY_TO_COLLECTION.get(category)
         if not collection_name:
             raise ValueError(f"Invalid category: {category}")
 
         vector_store = self.get_vector_store(collection_name)
+        vector_store.add_documents(chunk_docs)
 
-        # Add chunks to vector store
-        vector_store.add_documents(chunks)
-
-        return len(chunks), document_id
+        return len(chunk_docs), document_id
 
     def create_retrieval_tool(self, category: str):
         """Create retrieval tool for specific category"""
@@ -115,7 +110,7 @@ class RAGService:
         def retrieve(query: str):
             """Retrieve information related to a query from the knowledge base."""
             try:
-                retrieved_docs = vector_store.similarity_search(query, k=5)
+                retrieved_docs = vector_store.similarity_search(query, k=2)
                 if not retrieved_docs:
                     return "No relevant information found in the knowledge base.", []
 
