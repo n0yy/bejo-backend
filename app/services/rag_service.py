@@ -1,6 +1,7 @@
 from qdrant_client.models import Distance, VectorParams
 
 from langchain_docling import DoclingLoader
+from langchain_docling.loader import ExportType
 from langchain_qdrant import QdrantVectorStore
 from langchain_core.tools import tool
 from langchain_core.messages import SystemMessage
@@ -68,7 +69,7 @@ class RAGService:
     ) -> tuple[int, str]:
         """Process document and add to vector store"""
         # Load document using DoclingLoader
-        loader = DoclingLoader(file_path=file_path)
+        loader = DoclingLoader(file_path=file_path, export_type=ExportType.MARKDOWN)
         documents = loader.load()
 
         if not documents:
@@ -196,6 +197,3 @@ class RAGService:
         graph_builder.add_edge("generate", END)
 
         return graph_builder.compile(checkpointer=memory)
-
-
-

@@ -1,10 +1,11 @@
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters import MarkdownHeaderTextSplitter
 
 
-def splitter() -> RecursiveCharacterTextSplitter:
-    """Create a text splitter for document processing"""
-    return RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=200,
-        length_function=len,
+def splitter() -> MarkdownHeaderTextSplitter:
+    return MarkdownHeaderTextSplitter(
+        headers_to_split_on=[
+            ("#", "Header_1"),
+            ("##", "Header_2"),
+            ("###", "Header_3"),
+        ],
     )

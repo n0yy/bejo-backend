@@ -9,11 +9,11 @@ services:
     environment:
       - QDRANT_HOST=qdrant
       - QDRANT_PORT=6333
-      - OLLAMA_LLM_MODEL=qwen2.5:3b
+      - OLLAMA_LLM_MODEL=llama3.2
       - OLLAMA_EMBEDDING_MODEL=nomic-embed-text
       - OLLAMA_BASE_URL=http://ollama:11434
     volumes:
-      - ./Uploads:/app/uploads
+      - ./uploads:/app/uploads
       - ./qdrant_storage:/app/qdrant_storage
     restart: unless-stopped
 
