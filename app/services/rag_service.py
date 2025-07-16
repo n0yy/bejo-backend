@@ -36,7 +36,6 @@ class RAGService:
     def __init__(self):
         self.setup_collections()
         self.vector_stores = {}
-        self.setup_vector_stores()
 
     def setup_collections(self):
         """Setup Qdrant collections if they don't exist"""
@@ -54,14 +53,15 @@ class RAGService:
                     ),
                 )
 
-    def setup_vector_stores(self):
-        """Initialize vector stores for each collection"""
-        for collection_name in COLLECTION_NAMES:
+    def get_vector_store(self, collection_name: str) -> QdrantVectorStore:
+        """Get or create a vector store for a specific collection."""
+        if collection_name not in self.vector_stores:
             self.vector_stores[collection_name] = QdrantVectorStore(
                 client=qdrant_client,
                 collection_name=collection_name,
                 embedding=embeddings,
             )
+        return self.vector_stores[collection_name]
 
     def process_document(
         self, file_path: str, filename: str, category: str
@@ -95,7 +95,7 @@ class RAGService:
         if not collection_name:
             raise ValueError(f"Invalid category: {category}")
 
-        vector_store = self.vector_stores[collection_name]
+        vector_store = self.get_vector_store(collection_name)
 
         # Add chunks to vector store
         vector_store.add_documents(chunks)
@@ -108,7 +108,7 @@ class RAGService:
         if not collection_name:
             raise ValueError(f"Invalid category: {category}")
 
-        vector_store = self.vector_stores[collection_name]
+        vector_store = self.get_vector_store(collection_name)
 
         @tool(response_format="content_and_artifact")
         def retrieve(query: str):
@@ -198,4 +198,4 @@ class RAGService:
         return graph_builder.compile(checkpointer=memory)
 
 
-rag_service = RAGService()
+

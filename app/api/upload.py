@@ -2,7 +2,8 @@ from fastapi import APIRouter, UploadFile, File, Query, HTTPException
 from pathlib import Path
 import shutil
 
-from app.services.rag_service import rag_service, CATEGORY_TO_COLLECTION
+from app.services import rag_service
+from app.services.rag_service import CATEGORY_TO_COLLECTION
 from app.models.response import UploadResponse
 
 router = APIRouter(prefix="/upload", tags=["Upload"])

@@ -12,11 +12,6 @@ services:
       - OLLAMA_LLM_MODEL=qwen2.5:3b
       - OLLAMA_EMBEDDING_MODEL=nomic-embed-text
       - OLLAMA_BASE_URL=http://ollama:11434
-    depends_on:
-      qdrant:
-        condition: service_healthy
-      ollama:
-        condition: service_healthy
     volumes:
       - ./Uploads:/app/uploads
       - ./qdrant_storage:/app/qdrant_storage
@@ -35,16 +30,6 @@ services:
       - 6335
     volumes:
       - ./qdrant_data:/qdrant/storage
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "wget --no-verbose --tries=1 --spider http://localhost:6333/health || exit 1",
-        ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
 
   ollama:
     image: ollama/ollama:latest
@@ -55,30 +40,7 @@ services:
       - ollama_data:/root/.ollama
     environment:
       - OLLAMA_HOST=0.0.0.0
-    entrypoint: >
-      sh -c "
-        echo '⚡️ Memanggil kekuatan semesta untuk membangkitkan Ollama...' &&
-        apk add --no-cache curl &&
-        echo '🚀 Curl sudah siap, lanjutkan ritual...' &&
-        /bin/ollama serve & 
-        until curl -f http://localhost:11434/api/version; do 
-          echo '😴 Ollama lagi meditasi... sabar dulu hehe...'; 
-          sleep 2; 
-        done &&
-        echo '📦 Mengunduh otak sakti: qwen2.5:3b. Tunggu, jangan kaget kalau pinter banget...' &&
-        ollama pull qwen2.5:3b &&
-        echo '🧠 Menyuntikkan kemampuan embedding super: nomic-embed-text.' &&
-        ollama pull nomic-embed-text &&
-        echo '✅ Semua mantra berhasil. Server siap menerima wejangan. Jangan dimatiin yaa...' &&
-        wait
-      "
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:11434/api/version"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 60s
-    restart: unless-stopped
+    entrypoint: /bin/ollama serve
 
 volumes:
   qdrant_data:

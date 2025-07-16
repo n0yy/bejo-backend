@@ -2,7 +2,8 @@ from fastapi import APIRouter, HTTPException, Path as FastAPIPath
 from fastapi.responses import JSONResponse
 from app.models.request import ChatRequest
 from app.models.response import ChatResponse
-from app.services.rag_service import rag_service, CATEGORY_TO_COLLECTION
+from app.services import rag_service
+from app.services.rag_service import CATEGORY_TO_COLLECTION
 from app.core.memory import memory
 from langchain_core.messages import HumanMessage
 from datetime import datetime
