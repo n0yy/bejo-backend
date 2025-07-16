@@ -9,13 +9,16 @@ services:
     environment:
       - QDRANT_HOST=qdrant
       - QDRANT_PORT=6333
-      - OLLAMA_LLM_MODEL=qwen2.5:3b
-      - OLLAMA_EMBEDDING_MODEL=nomic-embed-text
+      - OLLAMA_LLM_MODEL=${OLLAMA_LLM_MODEL:-qwen2.5:3b}
+      - OLLAMA_EMBEDDING_MODEL=${OLLAMA_EMBEDDING_MODEL:-nomic-embed-text}
       - OLLAMA_BASE_URL=http://ollama:11434
     volumes:
       - ./uploads:/app/uploads
       - ./qdrant_storage:/app/qdrant_storage
     restart: unless-stopped
+    depends_on:
+      - qdrant
+      - ollama
 
   qdrant:
     image: qdrant/qdrant:latest
@@ -41,6 +44,28 @@ services:
     environment:
       - OLLAMA_HOST=0.0.0.0
     entrypoint: /bin/ollama serve
+    profiles:
+      - cpu
+
+  ollama-gpu:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    entrypoint: /bin/ollama serve
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    profiles:
+      - gpu
 
 volumes:
   qdrant_storage:
