@@ -110,7 +110,7 @@ class RAGService:
         def retrieve(query: str):
             """Retrieve information related to a query from the knowledge base."""
             try:
-                retrieved_docs = vector_store.similarity_search(query, k=2)
+                retrieved_docs = vector_store.similarity_search(query, k=3)
                 if not retrieved_docs:
                     return "No relevant information found in the knowledge base.", []
 

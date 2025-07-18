@@ -1,6 +1,6 @@
 [project]
 name = "bejo-backend"
-version = "0.1.4"
+version = "0.1.6"
 description = "Backend RAG service built with FastAPI, LangGraph, Ollama, and Qdrant"
 readme = "README.md"
 authors = ["Danang Hapis Fadillah <danangpostman37@gmail.com>"]

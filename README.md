@@ -165,12 +165,12 @@ GET /chat/history/{thread_id}
   "thread_id": "thread-123",
   "messages": [
     {
-      "type": "human",
+      "type": "user",
       "content": "User's question",
       "timestamp": "2024-01-01T00:00:00Z"
     },
     {
-      "type": "ai",
+      "type": "assistant",
       "content": "AI's answer",
       "timestamp": "2024-01-01T00:00:01Z"
     }
