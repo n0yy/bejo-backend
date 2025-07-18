@@ -23,7 +23,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 ENV PATH="/app/.venv/bin:$PATH"
 
-RUN mkdir -p uploads qdrant_storage
+RUN mkdir -p uploads
 
 EXPOSE 8000
 

@@ -7,5 +7,5 @@ load_dotenv()
 
 embeddings = OllamaEmbeddings(
     model=os.getenv("OLLAMA_EMBEDDING_MODEL"),
-    base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+    base_url=os.getenv("OLLAMA_URL", "http://localhost:11434"),
 )

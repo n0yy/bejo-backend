@@ -1,72 +1,28 @@
 services:
   bejo-backend:
-    image: bejo-backend
     build:
       context: .
       dockerfile: Dockerfile
+    image: bejo-backend
     ports:
       - "8000:8000"
     environment:
-      - QDRANT_HOST=qdrant
-      - QDRANT_PORT=6333
-      - OLLAMA_LLM_MODEL=${OLLAMA_LLM_MODEL:-qwen2.5:3b}
-      - OLLAMA_EMBEDDING_MODEL=${OLLAMA_EMBEDDING_MODEL:-nomic-embed-text}
-      - OLLAMA_BASE_URL=http://ollama:11434
+      - QDRANT_HOST=${QDRANT_HOST}
+      - QDRANT_PORT=${QDRANT_PORT}
+      - OLLAMA_LLM_MODEL=${OLLAMA_LLM_MODEL}
+      - OLLAMA_EMBEDDING_MODEL=${OLLAMA_EMBEDDING_MODEL}
+      - OLLAMA_URL=${OLLAMA_URL}
     volumes:
       - ./uploads:/app/uploads
-      - ./qdrant_storage:/app/qdrant_storage
     restart: unless-stopped
-    depends_on:
-      - qdrant
-      - ollama
-
-  qdrant:
-    image: qdrant/qdrant:latest
-    restart: unless-stopped
-    container_name: qdrant
-    ports:
-      - "6333:6333"
-      - "6334:6334"
-    expose:
-      - 6333
-      - 6334
-      - 6335
-    volumes:
-      - ./qdrant_storage:/qdrant/storage
-
-  ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama_data:/root/.ollama
-    environment:
-      - OLLAMA_HOST=0.0.0.0
-    entrypoint: /bin/ollama serve
     profiles:
       - cpu
-
-  ollama-gpu:
-    image: ollama/ollama:latest
-    container_name: ollama
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama_data:/root/.ollama
-    environment:
-      - OLLAMA_HOST=0.0.0.0
-    entrypoint: /bin/ollama serve
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-    profiles:
       - gpu
+    env_file:
+      - .env
+    networks:
+      - bejo-net
 
-volumes:
-  qdrant_storage:
-  ollama_data:
+networks:
+  bejo-net:
+    driver: bridge

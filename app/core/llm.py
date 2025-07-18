@@ -12,7 +12,7 @@ set_llm_cache(InMemoryCache())
 
 llm = ChatOllama(
     model=os.getenv("OLLAMA_LLM_MODEL"),
-    base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+    base_url=os.getenv("OLLAMA_URL", "http://localhost:11434"),
     cache=True,
     reasoning=False,
 )
