@@ -3,15 +3,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: bejo-backend
+    image: bejo-backend:gemini
     ports:
       - "8000:8000"
     environment:
       - QDRANT_HOST=${QDRANT_HOST}
       - QDRANT_PORT=${QDRANT_PORT}
-      - OLLAMA_LLM_MODEL=${OLLAMA_LLM_MODEL}
-      - OLLAMA_EMBEDDING_MODEL=${OLLAMA_EMBEDDING_MODEL}
-      - OLLAMA_URL=${OLLAMA_URL}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     volumes:
       - ./uploads:/app/uploads
     restart: unless-stopped

@@ -1,11 +1,8 @@
-from langchain_ollama.embeddings import OllamaEmbeddings
 from dotenv import load_dotenv
+from langchain_google_genai.embeddings import GoogleGenerativeAIEmbeddings
 
 import os
 
 load_dotenv()
 
-embeddings = OllamaEmbeddings(
-    model=os.getenv("OLLAMA_EMBEDDING_MODEL"),
-    base_url=os.getenv("OLLAMA_URL", "http://localhost:11434"),
-)
+embeddings = GoogleGenerativeAIEmbeddings(model="gemini-embedding-001")
