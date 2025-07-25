@@ -9,9 +9,7 @@ services:
     environment:
       - QDRANT_HOST=${QDRANT_HOST}
       - QDRANT_PORT=${QDRANT_PORT}
-      - OLLAMA_LLM_MODEL=${OLLAMA_LLM_MODEL}
-      - OLLAMA_EMBEDDING_MODEL=${OLLAMA_EMBEDDING_MODEL}
-      - OLLAMA_URL=${OLLAMA_URL}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     volumes:
       - ./uploads:/app/uploads
     restart: unless-stopped
@@ -23,6 +21,23 @@ services:
     networks:
       - bejo-net
 
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: bejo-qdrant
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    environment:
+      - QDRANT__STORAGE__PATH=/qdrant/storage
+    restart: unless-stopped
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    networks:
+      - bejo-net
+
 networks:
   bejo-net:
     driver: bridge
+
+volumes:
+  qdrant_storage:

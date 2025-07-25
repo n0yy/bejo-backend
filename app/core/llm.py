@@ -1,8 +1,7 @@
-from langchain_ollama.chat_models import ChatOllama
 from langchain_community.cache import InMemoryCache
 from langchain.globals import set_llm_cache
+from langchain_google_genai.chat_models import ChatGoogleGenerativeAI
 
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,9 +9,4 @@ load_dotenv()
 # Set Cache
 set_llm_cache(InMemoryCache())
 
-llm = ChatOllama(
-    model=os.getenv("OLLAMA_LLM_MODEL"),
-    base_url=os.getenv("OLLAMA_URL", "http://localhost:11434"),
-    cache=True,
-    reasoning=False,
-)
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")

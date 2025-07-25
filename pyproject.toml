@@ -12,6 +12,7 @@ dependencies = [
     "langchain-community>=0.3.27",
     "langchain-docling>=1.0.0",
     "langchain-ollama>=0.3.3",
+    "langchain-google-genai>=0.3.0",
     "langchain-qdrant>=0.2.0",
     "langchain-redis>=0.2.3",
     "langgraph>=0.5.0",
